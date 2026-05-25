@@ -691,6 +691,57 @@
       animation: blink 1.8s ease-in-out infinite;
     }
 
+    /* Unified 3-column vertical flows */
+    .flows-three-col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .flow-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .flow-col-header {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.74rem;
+      color: var(--accent-2);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      text-align: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+      width: 100%;
+      margin-bottom: 2px;
+    }
+
+    .flow-col .flow-node {
+      width: 100%;
+      min-height: 56px;
+      font-size: 0.75rem;
+      padding: 8px 10px;
+    }
+
+    .flow-col .flow-node:nth-child(odd) {
+      animation-delay: 0.3s;
+    }
+
+    .flow-col .flow-node:nth-child(3n) {
+      animation-delay: 0.6s;
+    }
+
+    .flow-arrow-v {
+      color: #9dd8ee;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1rem;
+      line-height: 1;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
     .cover-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.8fr);
@@ -728,6 +779,37 @@
       font-size: 0.78rem;
       color: #9eb5c3;
       margin-top: 8px;
+    }
+
+    /* Case use layout: flujo left (20%) + imagen right (80%) */
+    .case-use-layout {
+      display: grid;
+      grid-template-columns: 1fr 4fr;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .case-use-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .case-use-flow .flow-node {
+      font-size: 0.75rem;
+      padding: 8px 10px;
+      min-height: 50px;
+    }
+
+    .case-use-flow .flow-arrow-v {
+      text-align: center;
+      line-height: 1;
+    }
+
+    .case-use-media {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
     }
 
     .index-grid {
@@ -872,28 +954,28 @@
       margin-top: 14px;
     }
 
-    #s10 .card {
+    #s20 .card {
       text-align: center;
     }
 
-    #s10 .card ul {
+    #s20 .card ul {
       justify-items: center;
     }
 
-    #s10 .card li {
+    #s20 .card li {
       padding-left: 0;
       text-align: center;
       max-width: 34ch;
     }
 
-    #s10 .card li::before {
+    #s20 .card li::before {
       position: static;
       display: inline-block;
       margin-right: 8px;
       vertical-align: middle;
     }
 
-    #s10 .chips {
+    #s20 .chips {
       justify-content: center;
     }
 
@@ -908,6 +990,146 @@
       color: #c5e9f8;
       font-size: 0.74rem;
       font-family: "JetBrains Mono", monospace;
+    }
+
+    .notice {
+      margin-top: 14px;
+      padding: 10px 14px;
+      border: 1px solid rgba(78, 242, 194, 0.25);
+      border-radius: 10px;
+      background: rgba(78, 242, 194, 0.05);
+      color: #9eb5c3;
+      font-size: 0.84rem;
+      font-family: "JetBrains Mono", monospace;
+      line-height: 1.5;
+    }
+
+    .notice strong {
+      color: var(--accent-2);
+    }
+
+    /* Capability Cards */
+    .capability-card {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.02);
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+      animation: capabilityEntry 0.6s ease-out backwards;
+    }
+
+    .capability-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 0%, rgba(97, 218, 251, 0.05) 100%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .capability-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: rgba(97, 218, 251, 0.5);
+      box-shadow: 0 12px 32px rgba(97, 218, 251, 0.12), inset 0 0 20px rgba(97, 218, 251, 0.05);
+    }
+
+    .capability-card:hover::before {
+      opacity: 1;
+    }
+
+    .capability-card:nth-child(1) {
+      animation-delay: 0.1s;
+      --accent-var: #61dafb;
+    }
+
+    .capability-card:nth-child(2) {
+      animation-delay: 0.2s;
+      --accent-var: #4ef2c2;
+    }
+
+    .capability-card:nth-child(3) {
+      animation-delay: 0.3s;
+      --accent-var: #61dafb;
+    }
+
+    .capability-card:nth-child(4) {
+      animation-delay: 0.4s;
+      --accent-var: #4ef2c2;
+    }
+
+    .capability-card:hover:nth-child(1),
+    .capability-card:hover:nth-child(3) {
+      border-color: rgba(97, 218, 251, 0.6);
+      box-shadow: 0 12px 32px rgba(97, 218, 251, 0.18), inset 0 0 20px rgba(97, 218, 251, 0.08);
+    }
+
+    .capability-card:hover:nth-child(2),
+    .capability-card:hover:nth-child(4) {
+      border-color: rgba(78, 242, 194, 0.6);
+      box-shadow: 0 12px 32px rgba(78, 242, 194, 0.18), inset 0 0 20px rgba(78, 242, 194, 0.08);
+    }
+
+    @keyframes capabilityEntry {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .capability-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .capability-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      background: rgba(97, 218, 251, 0.12);
+      color: var(--accent-2);
+      border: 1px solid rgba(78, 242, 194, 0.3);
+      flex-shrink: 0;
+    }
+
+    .capability-card:nth-child(1) .capability-badge,
+    .capability-card:nth-child(3) .capability-badge {
+      background: rgba(97, 218, 251, 0.12);
+      border-color: rgba(97, 218, 251, 0.4);
+      color: #61dafb;
+    }
+
+    .capability-card:nth-child(2) .capability-badge,
+    .capability-card:nth-child(4) .capability-badge {
+      background: rgba(78, 242, 194, 0.12);
+      border-color: rgba(78, 242, 194, 0.4);
+      color: #4ef2c2;
+    }
+
+    .capability-card h3 {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 10px;
+      font-size: 1.02rem;
+    }
+
+    .capability-card ul {
+      position: relative;
+      z-index: 1;
     }
 
     @media (max-width: 980px) {
@@ -939,7 +1161,8 @@
       .cover-layout,
       .summary-grid,
       .index-grid,
-      .tech-grid {
+      .tech-grid,
+      .flows-three-col {
         grid-template-columns: 1fr;
       }
 
@@ -981,12 +1204,14 @@
 <body>
   <div class="hud" aria-hidden="true">
     <div class="brand"><span class="dot"></span> Chatbot Insights R9K</div>
-    <div class="counter" id="counter">01 / 14</div>
+    <div class="counter" id="counter">01 / 19</div>
   </div>
 
   <nav class="dots" id="dots" aria-label="Ir a diapositiva"></nav>
 
   <main class="deck" id="deck">
+
+    <!-- ─── S1 PORTADA ─────────────────────────────────────────────────── -->
     <section class="slide" id="s1">
       <article class="slide-inner">
         <div class="cover-layout">
@@ -1013,218 +1238,174 @@
       </article>
     </section>
 
+    <!-- ─── S2 ÍNDICE ──────────────────────────────────────────────────── -->
     <section class="slide" id="s2">
       <article class="slide-inner index-slide">
         <h2>Indice</h2>
         <div class="index-grid">
-          <article class="index-item"><strong>1) Problema, objetivo y alcance</strong><span>Contexto, necesidad y alcance del proyecto.</span></article>
-          <article class="index-item"><strong>2) Capacidades funcionales</strong><span>Chat de datos, Report Builder y Manuals Chat.</span></article>
-          <article class="index-item"><strong>3) Tecnologías usadas</strong><span>Stack técnico de la app y despliegue.</span></article>
-          <article class="index-item"><strong>4) Flujo visual A</strong><span>Conversión de lenguaje natural a SQL.</span></article>
-          <article class="index-item"><strong>5) Flujo visual B</strong><span>RAG con n8n para consultas de manuales.</span></article>
-          <article class="index-item"><strong>6) Arquitectura por capas</strong><span>Vista estructurada del sistema completo.</span></article>
-          <article class="index-item"><strong>7) Flujo visual C</strong><span>Construcción y exportación de reportes.</span></article>
-          <article class="index-item"><strong>8) Seguridad y despliegue</strong><span>Gobierno, autenticación e infraestructura.</span></article>
-          <article class="index-item"><strong>9) Validación funcional</strong><span>Qué valida la solución y qué aporta al usuario.</span></article>
-          <article class="index-item"><strong>10) Calidad del proyecto</strong><span>Tests y criterios de evaluación técnica.</span></article>
-          <article class="index-item"><strong>11) Summary de la app</strong><span>Resumen ejecutivo de toda la aplicación.</span></article>
-          <article class="index-item"><strong>12) Posibles preguntas técnicas</strong><span>3 preguntas habituales en defensa.</span></article>
+          <article class="index-item">1) Problema, objetivo y alcance</article>
+          <article class="index-item">2) Capacidades funcionales</article>
+          <article class="index-item">3) Tecnologias usadas</article>
+          <article class="index-item">4) Arquitectura por capas</article>
+          <article class="index-item">5) Chat de datos (NL → SQL)</article>
+          <article class="index-item">6) Manuals Chat (RAG n8n)</article>
+          <article class="index-item">7) Report Builder</article>
+          <article class="index-item">8) Validacion funcional</article>
+          <article class="index-item">9) Summary de la app</article>
+          <article class="index-item">10) Posibles preguntas tecnicas</article>
         </div>
       </article>
     </section>
 
+    <!-- ─── S3 PROBLEMA, OBJETIVO Y ALCANCE ───────────────────────────── -->
     <section class="slide" id="s3">
       <article class="slide-inner">
         <h2>1) Problema, objetivo y alcance</h2>
         <div class="grid two">
           <article class="card">
-            <h3>Problema operativo</h3>
+            <h3>El problema real</h3>
             <ul>
-              <li>Dependencia de expertos para construir SQL.</li>
-              <li>Tiempos altos para extraer insights y reportes reutilizables.</li>
-              <li>Dificultad para explotar manuales tecnicos con trazabilidad.</li>
-              <li>Necesidad de control corporativo y gobernanza.</li>
+              <li>Los centros de control de empresas de transporte (p. ej. ferroviario) registran datos operativos en tiempo real: trayectos, incidencias, estados por linea y estacion.</li>
+              <li>Las bases de datos son locales e internas; los datos se insertan en vivo mientras los trenes circulan a lo largo del dia, la semana o el año.</li>
+              <li>Los operarios no tienen conocimiento tecnico para escribir SQL, por lo que no pueden consultar esos datos sin depender de un especialista.</li>
+              <li>Acceder a manuales tecnicos del software del centro de control es lento y poco trazable.</li>
             </ul>
           </article>
           <article class="card">
-            <h3>Objetivo tecnico</h3>
+            <h3>Objetivo del proyecto</h3>
             <ul>
-              <li>Democratizar analitica con interfaz conversacional.</li>
-              <li>Reducir friccion entre pregunta de negocio y datos.</li>
-              <li>Estandarizar reporting HTML/PDF/CSV.</li>
-              <li>Integrar consulta documental con RAG contextual.</li>
+              <li>Proporcionar a operarios no tecnicos una interfaz conversacional en lenguaje natural para consultar datos operativos en tiempo real.</li>
+              <li>Permitir seleccionar esos datos y exportarlos como reportes tecnicos (HTML / PDF / CSV) sin intermediarios.</li>
+              <li>Ofrecer un chat con manuales del software del centro de control mediante RAG, para soporte tecnico rapido y contextualizado.</li>
+              <li>Todo esto sin requerir conocimiento SQL ni formacion tecnica avanzada por parte del usuario.</li>
             </ul>
           </article>
         </div>
-        <div class="square-figure">
-          <img src="svg/2.svg" alt="SVG cuadrado de problema y alcance" />
-        </div>
+        <p class="notice">
+          <strong>Nota:</strong> Este proyecto se ha desarrollado sobre una aplicacion base ya existente. El trabajo realizado comprende la extension, integracion y validacion tecnica de la plataforma, no su construccion desde cero.
+        </p>
       </article>
     </section>
 
+    <!-- ─── S4 CAPACIDADES FUNCIONALES ────────────────────────────────── -->
     <section class="slide" id="s4">
       <article class="slide-inner">
         <h2>2) Capacidades funcionales</h2>
         <div class="grid two">
-          <article class="card">
-            <h3>Chat de datos (Text-to-SQL)</h3>
+          <article class="capability-card">
+            <div class="capability-header">
+              <div class="capability-badge">1</div>
+              <h3>Chat de datos (Text-to-SQL)</h3>
+            </div>
             <ul>
-              <li>Input por texto o audio.</li>
-              <li>Agente LLM genera SQL y valida formato.</li>
-              <li>Ejecucion SELECT-only y reintentos por sintaxis.</li>
-              <li>Tabla + metadatos tecnicos para supervisor.</li>
+              <li>Entrada en lenguaje natural (texto o audio).</li>
+              <li>LLM genera y valida SQL de forma segura.</li>
+              <li>Ejecución SELECT-only en la base de datos.</li>
+              <li>Devuelve tabla con resultados + narrativa.</li>
             </ul>
           </article>
-          <article class="card">
-            <h3>Chat with Data</h3>
+          <article class="capability-card">
+            <div class="capability-header">
+              <div class="capability-badge">2</div>
+              <h3>Chat with Data</h3>
+            </div>
             <ul>
               <li>Respuesta breve en lenguaje natural desde dataframe.</li>
               <li>Complementa SQL/tablas con narrativa ejecutiva.</li>
             </ul>
           </article>
-          <article class="card">
-            <h3>Report Builder</h3>
+          <article class="capability-card">
+            <div class="capability-header">
+              <div class="capability-badge">3</div>
+              <h3>Report Builder</h3>
+            </div>
             <ul>
-              <li>Plantillas HTML + componentes visuales.</li>
-              <li>Recomendador de grafica con agente LLM.</li>
-              <li>Exportacion a PDF y CSV.</li>
+              <li>Templating visual con componentes HTML.</li>
+              <li>IA recomienda la mejor visualización.</li>
+              <li>Exportación a PDF, CSV y HTML.</li>
             </ul>
           </article>
-          <article class="card">
-            <h3>Manuals Chat (RAG)</h3>
+          <article class="capability-card">
+            <div class="capability-header">
+              <div class="capability-badge">4</div>
+              <h3>Manuals Chat (RAG)</h3>
+            </div>
             <ul>
-              <li>Webhook n8n con API key y sessionId.</li>
-              <li>Parseo flexible de respuestas del workflow.</li>
-              <li>Entrada por voz para soporte tecnico.</li>
+              <li>Chat sobre manuales del software.</li>
+              <li>Integración con n8n para RAG.</li>
+              <li>Entrada por voz para operarios.</li>
             </ul>
           </article>
         </div>
       </article>
     </section>
 
+    <!-- ─── S5 INTERFAZ VISUAL ────────────────────────────────────────── -->
     <section class="slide" id="s5">
+      <article class="slide-inner">
+        <h2>Interfaz visual: Rail9000 Chat</h2>
+        <div class="media-slot" style="margin-top: 20px; min-height: 500px;">
+          <img src="screenshots/interfaz-rail9000-chat.png" alt="Interfaz principal de Rail9000 Chat" />
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S6 TECNOLOGÍAS ─────────────────────────────────────────────── -->
+    <section class="slide" id="s6">
       <article class="slide-inner">
         <h2>3) Tecnologias usadas</h2>
         <div class="tech-grid">
-          <article class="tech-card">
-            <div class="tech-head">
-              <div class="tech-icon"><img src="svg/12.svg" alt="Icono frontend" /></div>
+          <article class="tech-card" style="min-height: 280px; display: flex; flex-direction: column; justify-content: center;">
+            <div class="tech-head" style="margin-bottom: 16px;">
               <div>
                 <h3>Frontend y UX</h3>
-                <p>Interfaz, layout y experiencia</p>
               </div>
             </div>
-            <div class="tech-points">
-              <span><i>•</i> Python 3.11 + Streamlit</span>
-              <span><i>•</i> Reporting HTML con CSS Grid</span>
-              <span><i>•</i> Interfaz conversacional responsive</span>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Python 3.11</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Streamlit</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">CSS Grid</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">HTML</span>
             </div>
           </article>
-          <article class="tech-card">
-            <div class="tech-head">
-              <div class="tech-icon"><img src="svg/4.svg" alt="Icono IA" /></div>
+          <article class="tech-card" style="min-height: 280px; display: flex; flex-direction: column; justify-content: center;">
+            <div class="tech-head" style="margin-bottom: 16px;">
               <div>
                 <h3>IA y datos</h3>
-                <p>Modelos, agentes y base de datos</p>
               </div>
             </div>
-            <div class="tech-points">
-              <span><i>•</i> LangChain + Azure OpenAI</span>
-              <span><i>•</i> Ollama como fallback local</span>
-              <span><i>•</i> PostgreSQL + sqlglot SELECT-only</span>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">LangChain</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Azure OpenAI</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Ollama</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">PostgreSQL</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">sqlglot</span>
             </div>
           </article>
-          <article class="tech-card">
-            <div class="tech-head">
-              <div class="tech-icon"><img src="svg/13.svg" alt="Icono despliegue" /></div>
+          <article class="tech-card" style="min-height: 280px; display: flex; flex-direction: column; justify-content: center;">
+            <div class="tech-head" style="margin-bottom: 16px;">
               <div>
-                <h3>Integracion y despliegue</h3>
-                <p>Automatizacion y operación</p>
+                <h3>Integración y despliegue</h3>
               </div>
             </div>
-            <div class="tech-points">
-              <span><i>•</i> n8n para RAG y automatizacion</span>
-              <span><i>•</i> Azure Entra + Graph API</span>
-              <span><i>•</i> Docker Compose + Kubernetes</span>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">n8n</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Azure Entra</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Graph API</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Docker</span>
+              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Kubernetes</span>
             </div>
           </article>
         </div>
-        <div class="tech-chips">
-          <span class="tech-chip">Python 3.11</span>
-          <span class="tech-chip">Streamlit</span>
-          <span class="tech-chip">LangChain</span>
-          <span class="tech-chip">Azure OpenAI</span>
-          <span class="tech-chip">Ollama</span>
-          <span class="tech-chip">PostgreSQL</span>
-          <span class="tech-chip">sqlglot</span>
-          <span class="tech-chip">n8n</span>
-          <span class="tech-chip">Docker</span>
-          <span class="tech-chip">Kubernetes</span>
-        </div>
+      </article>
+    </section>
       </article>
     </section>
 
-    <section class="slide" id="s6">
-      <article class="slide-inner">
-        <h2>4) Flujo visual A - Chat de datos (NL -&gt; SQL)</h2>
-        <div class="flow-mermaid">
-          <div class="flow-path">
-            <div class="flow-node">Usuario<br/>Texto o audio</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">UI Streamlit<br/>Input handler</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">Controller<br/>Orquestacion</div>
-          </div>
-          <div class="flow-path">
-            <div class="flow-node">SQL Agent (LLM)<br/>Genera SQL</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">SQL Validator<br/>SELECT-only</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">PostgreSQL<br/>Ejecuta consulta</div>
-          </div>
-          <div class="flow-path">
-            <div class="flow-node">DataFrame<br/>+ metadatos</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">Chat with Data<br/>Narrativa</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">Respuesta final<br/>Usuario</div>
-          </div>
-        </div>
-      </article>
-    </section>
-
+    <!-- ─── S7 ARQUITECTURA POR CAPAS ─────────────────────────────────── -->
     <section class="slide" id="s7">
       <article class="slide-inner">
-        <h2>5) Flujo visual B - Manuals Chat (n8n RAG)</h2>
-        <div class="flow-mermaid">
-          <div class="flow-path">
-            <div class="flow-node">Usuario<br/>Texto o voz</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">Whisper/Input<br/>Transcripcion</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">Webhook n8n<br/>API key + sessionId</div>
-          </div>
-          <div class="flow-path">
-            <div class="flow-node">n8n workflow<br/>Retrieval</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">LLM<br/>Generacion</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">Response parse<br/>JSON trazable</div>
-          </div>
-          <div class="flow-path">
-            <div class="flow-node warn">Fallback / timeout</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">Reintento</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">Usuario</div>
-          </div>
-        </div>
-      </article>
-    </section>
-
-    <section class="slide" id="s8">
-      <article class="slide-inner">
-        <h2>6) Arquitectura por capas</h2>
+        <h2>4) Arquitectura por capas</h2>
         <div class="grid" style="gap:10px;">
           <article class="layer">
             <div class="layer-id">Capa 1</div>
@@ -1250,72 +1431,151 @@
       </article>
     </section>
 
-    <section class="slide" id="s9">
+    <!-- ─── S8 CHAT DE DATOS: FLUJO ──────────────────────────────────── -->
+    <section class="slide" id="s8">
       <article class="slide-inner">
-        <h2>7) Flujo visual C - Report Builder</h2>
+        <h2>5) Chat de datos (NL → SQL)</h2>
+        <p style="margin-bottom: 24px; color: var(--muted);">El usuario hace una pregunta en lenguaje natural. La aplicación genera SQL seguro, lo valida y ejecuta en la base de datos.</p>
+
         <div class="flow-mermaid">
           <div class="flow-path">
-            <div class="flow-node">Usuario<br/>Define dataset</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">Plantilla HTML<br/>Base visual</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">Graficas<br/>Plotly</div>
+            <div class="flow-node">Usuario<br/>pregunta natural</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node alt">LLM genera<br/>SQL</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node">Valida +<br/>ejecuta</div>
           </div>
           <div class="flow-path">
-            <div class="flow-node alt">IA recomendador<br/>Mejor grafica</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node">Ajustes<br/>Titulo y estilo</div>
-            <div class="flow-link">--&gt;</div>
-            <div class="flow-node alt">Exportacion<br/>PDF + CSV</div>
+            <div class="flow-node alt">PostgreSQL</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node">Tabla<br/>resultados</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node alt">Narrativa<br/>LLM</div>
           </div>
         </div>
       </article>
     </section>
 
-    <section class="slide" id="s10">
+    <!-- ─── S9 CHAT DE DATOS: RESULTADO ──────────────────────────────── -->
+    <section class="slide" id="s9">
       <article class="slide-inner">
-        <h2>8) Seguridad, gobierno y despliegue</h2>
-        <div class="grid three">
-          <article class="card">
-            <h3>Backend + IA</h3>
-            <ul>
-              <li>Python 3.11, Streamlit, Pydantic Settings.</li>
-              <li>LangChain con Azure Chat Completions y opcion Ollama.</li>
-              <li>Prompts con contexto y control de tokens (tiktoken).</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Datos + seguridad</h3>
-            <ul>
-              <li>PostgreSQL y validacion SQL via sqlglot (SELECT-only).</li>
-              <li>SSO Azure Entra + autorizacion por grupos.</li>
-              <li>Secretos en env/configmap/secret fuera de codigo.</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Operacion</h3>
-            <ul>
-              <li>Local/dev con Docker Compose.</li>
-              <li>Produccion en contenedor Streamlit + DB.</li>
-              <li>Kubernetes con Deployment/Service/Ingress/Config/Secret.</li>
-            </ul>
-          </article>
-        </div>
-        <div class="chips">
-          <span class="chip">Azure Entra + Graph API</span>
-          <span class="chip">sqlglot SELECT-only</span>
-          <span class="chip">ConfigMap + Secret</span>
-          <span class="chip">Docker + Kubernetes</span>
-        </div>
-        <div class="square-figure">
-          <img src="svg/6.svg" alt="SVG cuadrado de seguridad y despliegue" />
+        <h2>Resultado: Tabla de datos</h2>
+        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+          <img src="screenshots/chat-resultado-tabla.png" alt="Resultado tabla SQL" />
         </div>
       </article>
     </section>
 
+    <!-- ─── S10 MANUALS CHAT: FLUJO ──────────────────────────────────── -->
+    <section class="slide" id="s10">
+      <article class="slide-inner">
+        <h2>6) Manuals Chat (RAG n8n)</h2>
+        <p style="margin-bottom: 24px; color: var(--muted);">El usuario consulta manuales del software. n8n realiza búsqueda contextual (RAG) y genera respuestas precisas.</p>
+
+        <div class="flow-mermaid">
+          <div class="flow-path">
+            <div class="flow-node">Usuario<br/>pregunta</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node alt">Webhook<br/>n8n</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node">Retrieval<br/>RAG</div>
+          </div>
+          <div class="flow-path">
+            <div class="flow-node alt">LLM<br/>contexto</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node">Respuesta<br/>final</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S11 MANUALS CHAT: WORKFLOW N8N ───────────────────────────── -->
     <section class="slide" id="s11">
       <article class="slide-inner">
-        <h2>9) Validacion funcional y experiencia de uso</h2>
+        <h2>Workflow n8n: Retrieval RAG</h2>
+        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+          <img src="screenshots/n8n-workflow-rag.png" alt="Workflow n8n RAG" />
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S12 MANUALS CHAT: RESULTADO ──────────────────────────────── -->
+    <section class="slide" id="s12">
+      <article class="slide-inner">
+        <h2>Respuesta: Consulta de manuales</h2>
+        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+          <img src="screenshots/manuals-chat-resultado.png" alt="Resultado Manuals Chat" />
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S13 REPORT BUILDER: FLUJO ────────────────────────────────── -->
+    <section class="slide" id="s13">
+      <article class="slide-inner">
+        <h2>7) Report Builder</h2>
+        <p style="margin-bottom: 24px; color: var(--muted);">El usuario selecciona datos. La IA sugiere la mejor visualización y genera reportes exportables en PDF, HTML o CSV.</p>
+
+        <div class="flow-mermaid">
+          <div class="flow-path">
+            <div class="flow-node">Usuario<br/>selecciona datos</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node alt">IA recomienda<br/>visualización</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node">Gráficas<br/>Plotly</div>
+          </div>
+          <div class="flow-path">
+            <div class="flow-node alt">Ajustes<br/>visuales</div>
+            <div class="flow-link">→</div>
+            <div class="flow-node">Exporta<br/>PDF/CSV</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S14 REPORT BUILDER: REPORTE 1 ────────────────────────────── -->
+    <section class="slide" id="s14">
+      <article class="slide-inner">
+        <h2>Reporte 1</h2>
+        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+          <img src="screenshots/report-1.png" alt="Ejemplo Reporte 1" />
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S15 REPORT BUILDER: REPORTE 2 ────────────────────────────── -->
+    <section class="slide" id="s15">
+      <article class="slide-inner">
+        <h2>Reporte 2</h2>
+        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+          <img src="screenshots/report-2.png" alt="Ejemplo Reporte 2" />
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S16 REPORT BUILDER: REPORTE 3 ────────────────────────────── -->
+    <section class="slide" id="s16">
+      <article class="slide-inner">
+        <h2>Reporte 3</h2>
+        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+          <img src="screenshots/report-3.png" alt="Ejemplo Reporte 3" />
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S17 REPORT BUILDER: REPORTE 4 ────────────────────────────── -->
+    <section class="slide" id="s17">
+      <article class="slide-inner">
+        <h2>Reporte 4</h2>
+        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+          <img src="screenshots/report-4.png" alt="Ejemplo Reporte 4" />
+        </div>
+      </article>
+    </section>
+
+    <!-- ─── S19 VALIDACIÓN FUNCIONAL ───────────────────────────────────── -->
+    <section class="slide" id="s19">
+      <article class="slide-inner">
+        <h2>8) Validacion funcional y experiencia de uso</h2>
         <div class="grid two">
           <article class="card">
             <h3>Lo que ya valida el proyecto</h3>
@@ -1329,10 +1589,9 @@
           <article class="card">
             <h3>Valor para operaciones</h3>
             <p>
-              Reduce dependencia de especialistas SQL y acelera tiempo de respuesta
-              para consultas operativas y reportes reutilizables.
+              Elimina la dependencia de especialistas SQL en el centro de control: cualquier operario puede consultar datos operativos en tiempo real usando lenguaje natural y obtener reportes sin intermediarios.
             </p>
-            <p style="margin-top:10px;">Incluye ademas control de acceso corporativo y gobernanza de datos.</p>
+            <p style="margin-top:10px;">Incluye ademas control de acceso corporativo, gobernanza de datos y soporte documental contextualizado.</p>
           </article>
         </div>
         <div class="square-figure">
@@ -1341,55 +1600,22 @@
       </article>
     </section>
 
-    <section class="slide" id="s12">
+    <!-- ─── S21 SUMMARY ────────────────────────────────────────────────── -->
+    <section class="slide" id="s21">
       <article class="slide-inner">
-        <h2>10) Calidad del proyecto</h2>
-        <div class="grid two">
-          <article class="card ok">
-            <h3>Calidad tecnica</h3>
-            <ul>
-              <li>Tests para agentes, app y flujo RAG.</li>
-              <li>Script de validacion SQL con metricas AST/columnas/tiempos.</li>
-              <li>Arquitectura modular por capas para evolucion controlada.</li>
-            </ul>
-            <div class="chips">
-              <span class="chip">test_agent.py</span>
-              <span class="chip">test_app.py</span>
-              <span class="chip">test_rag.py</span>
-              <span class="chip">validate.py</span>
-            </div>
-          </article>
-          <article class="card">
-            <h3>Criterios de evaluacion tecnica</h3>
-            <ul>
-              <li>Seguridad: SSO, autorizacion por grupos y SQL en modo solo lectura.</li>
-              <li>Escalabilidad: despliegue portable en Docker/Kubernetes.</li>
-              <li>Mantenibilidad: separacion clara entre UI, control, IA e integraciones.</li>
-              <li>Usabilidad: experiencia conversacional con salida tecnica y ejecutiva.</li>
-            </ul>
-          </article>
-        </div>
-        <div class="square-figure">
-          <img src="svg/7.svg" alt="SVG cuadrado de calidad del proyecto" />
-        </div>
-      </article>
-    </section>
-
-    <section class="slide" id="s13">
-      <article class="slide-inner">
-        <h2>11) Summary de la app</h2>
+        <h2>9) Summary de la app</h2>
         <div class="summary-grid">
           <article class="card">
             <h3>Que resuelve</h3>
-            <p>Convierte preguntas en lenguaje natural en analitica, reportes y consulta documental gobernada.</p>
+            <p>Permite a operarios de centros de control consultar datos operativos en tiempo real, generar reportes y acceder a manuales, sin conocimiento SQL ni dependencia de especialistas.</p>
           </article>
           <article class="card">
             <h3>Como lo hace</h3>
-            <p>Combina Streamlit, agentes IA, validacion SQL, RAG con n8n, y exportacion de resultados reutilizables.</p>
+            <p>Combina Streamlit, agentes IA (LangChain + Azure OpenAI), validacion SQL, RAG con n8n, y exportacion de resultados reutilizables.</p>
           </article>
           <article class="card">
             <h3>Valor final</h3>
-            <p>Reduce dependencia de especialistas, acelera la toma de decisiones y aporta trazabilidad tecnica.</p>
+            <p>Reduce friccion operativa, acelera la toma de decisiones en tiempo real y aporta trazabilidad tecnica con gobierno corporativo integrado.</p>
           </article>
         </div>
         <div class="square-figure">
@@ -1398,9 +1624,10 @@
       </article>
     </section>
 
-    <section class="slide" id="s14">
+    <!-- ─── S22 PREGUNTAS TÉCNICAS ─────────────────────────────────────── -->
+    <section class="slide" id="s22">
       <article class="slide-inner">
-        <h2>12) Posibles preguntas tecnicas</h2>
+        <h2>10) Posibles preguntas tecnicas</h2>
         <div class="grid three">
           <article class="question-box">
             <strong>1. Como evitas que el LLM genere SQL inseguro?</strong>
@@ -1408,7 +1635,7 @@
           </article>
           <article class="question-box">
             <strong>2. Que ventaja aporta n8n en Manuals Chat?</strong>
-            <p>Desacopla el flujo RAG, permite iterar rapido y mantiene el pipeline de retrieval y generacion más flexible.</p>
+            <p>Desacopla el flujo RAG, permite iterar rapido y mantiene el pipeline de retrieval y generacion mas flexible.</p>
           </article>
           <article class="question-box">
             <strong>3. Como se adapta la solucion a entorno corporativo?</strong>
@@ -1420,6 +1647,7 @@
         </div>
       </article>
     </section>
+
   </main>
 
   <div class="controls" aria-label="Navegacion">
