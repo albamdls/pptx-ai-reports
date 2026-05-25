@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chatbot Insights R9K | Deck Técnico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #071017;
+      --panel: rgba(9, 22, 31, 0.76);
+      --line: rgba(125, 220, 255, 0.22);
+      --text: #eaf6fc;
+      --muted: #9eb5c3;
+      --accent: #61dafb;
+      --accent-2: #4ef2c2;
+      --danger: #ff9797;
+      --radius: 20px;
+      --max: 1180px;
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.36);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 5%, rgba(78, 242, 194, 0.16), transparent 35%),
+        radial-gradient(circle at 82% -5%, rgba(97, 218, 251, 0.14), transparent 42%),
+        linear-gradient(160deg, #061018 0%, #091723 52%, #08121a 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at 50% 40%, black 30%, transparent 82%);
+    }
+
+    .hud {
+      position: fixed;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      z-index: 20;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .brand {
+      pointer-events: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(5, 12, 17, 0.68);
+      backdrop-filter: blur(8px);
+      padding: 8px 12px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(130deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 14px rgba(97, 218, 251, 0.85);
+    }
+
+    .counter {
+      pointer-events: auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(5, 12, 17, 0.68);
+      backdrop-filter: blur(8px);
+      padding: 8px 12px;
+      color: #b8d6e4;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+    }
+
+    .deck {
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+    }
+
+    .slide {
+      min-height: 100svh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: grid;
+      align-items: center;
+      padding: 60px 24px 60px;
+      position: relative;
+    }
+
+    .slide-inner {
+      width: min(var(--max), 100%);
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      max-height: calc(100svh - 120px);
+      overflow-y: auto;
+      opacity: 0.34;
+      transform: translateY(12px) scale(0.985);
+      transition: 0.5s ease;
+    }
+
+    .slide.active .slide-inner {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .slide-inner::after {
+      content: "";
+      position: absolute;
+      inset: -70% auto auto -24%;
+      width: 260px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(97, 218, 251, 0.13), transparent 62%);
+      pointer-events: none;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.08;
+      letter-spacing: 0.01em;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4.2vw, 4rem);
+      max-width: 17ch;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 2.5vw, 2.3rem);
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.02rem;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .lead {
+      max-width: 72ch;
+      font-size: 1.04rem;
+    }
+
+    .kicker {
+      color: var(--accent-2);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .chip {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.77rem;
+      color: #c5e9f8;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    ul {
+      list-style: none;
+      display: grid;
+      gap: 7px;
+      margin-top: 6px;
+    }
+
+    li {
+      color: var(--muted);
+      position: relative;
+      padding-left: 14px;
+      line-height: 1.4;
+    }
+
+    li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      position: absolute;
+      left: 0;
+      top: 0.56em;
+      box-shadow: 0 0 10px rgba(97, 218, 251, 0.8);
+    }
+
+    .layer {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 98px 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .layer-id {
+      color: var(--accent-2);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      align-self: center;
+      text-align: center;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .step {
+      border-left: 2px solid var(--line);
+      padding-left: 12px;
+      position: relative;
+    }
+
+    .step::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      position: absolute;
+      left: -5px;
+      top: 7px;
+      background: linear-gradient(130deg, var(--accent), var(--accent-2));
+    }
+
+    .risk {
+      border-left: 3px solid var(--danger);
+      padding-left: 11px;
+    }
+
+    .ok {
+      border-left: 3px solid var(--accent-2);
+      padding-left: 11px;
+    }
+
+    .controls {
+      position: fixed;
+      z-index: 21;
+      right: 16px;
+      bottom: 18px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(5, 12, 17, 0.7);
+      color: #d8f2fb;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .dots {
+      position: fixed;
+      z-index: 21;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: grid;
+      gap: 9px;
+    }
+
+    .dot-btn {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(198, 230, 246, 0.55);
+      background: rgba(255, 255, 255, 0.12);
+      cursor: pointer;
+    }
+
+    .dot-btn.active {
+      border-color: transparent;
+      background: linear-gradient(130deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 10px rgba(97, 218, 251, 0.9);
+    }
+
+    .hint {
+      margin-top: 14px;
+      color: #b6d0dd;
+      font-size: 0.85rem;
+      font-family: "JetBrains Mono", monospace;
+      letter-spacing: 0.03em;
+    }
+
+    .flow-board {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .flow-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .node {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(8, 27, 37, 0.72);
+      color: #d7f1fb;
+      padding: 7px 10px;
+      font-size: 0.82rem;
+      font-family: "JetBrains Mono", monospace;
+      letter-spacing: 0.02em;
+    }
+
+    .node.alt {
+      border-color: rgba(78, 242, 194, 0.35);
+      background: rgba(10, 32, 30, 0.7);
+    }
+
+    .node.warn {
+      border-color: rgba(255, 151, 151, 0.35);
+      background: rgba(40, 18, 18, 0.68);
+    }
+
+    .arrow {
+      color: #9dd8ee;
+      font-size: 0.86rem;
+      font-family: "JetBrains Mono", monospace;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%,
+      100% { opacity: 0.35; }
+      50% { opacity: 1; }
+    }
+
+    .node {
+      animation: lift 3.8s ease-in-out infinite;
+    }
+
+    .node:nth-child(odd) {
+      animation-delay: 0.35s;
+    }
+
+    @keyframes lift {
+      0%,
+      100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    .media-slot {
+      border: 1px dashed rgba(125, 220, 255, 0.55);
+      border-radius: 14px;
+      min-height: 280px;
+      max-height: 360px;
+      background:
+        linear-gradient(160deg, rgba(97, 218, 251, 0.08), rgba(78, 242, 194, 0.05)),
+        rgba(255, 255, 255, 0.02);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 16px;
+      margin-top: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .media-slot img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .media-slot div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+
+    .media-slot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 22px 22px;
+      opacity: 0.28;
+      pointer-events: none;
+    }
+
+    .media-slot b {
+      display: block;
+      color: #e7f7ff;
+      font-size: 0.94rem;
+      margin-bottom: 5px;
+    }
+
+    .media-slot span {
+      color: #b5cfdb;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.77rem;
+      letter-spacing: 0.03em;
+    }
+
+    .flow-stage {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      margin-top: 10px;
+      position: relative;
+    }
+
+    .flow-stage h3 {
+      margin-bottom: 10px;
+    }
+
+    .flow-line {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      align-items: center;
+    }
+
+    .step-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(8, 27, 37, 0.72);
+      padding: 12px;
+      min-height: 82px;
+      animation: pulse 2.6s ease-in-out infinite;
+    }
+
+    .step-box:nth-child(2) {
+      animation-delay: 0.35s;
+    }
+
+    .step-box:nth-child(3) {
+      animation-delay: 0.7s;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% { box-shadow: 0 0 0 rgba(97, 218, 251, 0); }
+      50% { box-shadow: 0 0 18px rgba(97, 218, 251, 0.15); }
+    }
+
+    .step-box p {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.2rem;
+      color: #ddf4ff;
+      margin-bottom: 3px;
+    }
+
+    .metric span {
+      color: #9eb5c3;
+      font-size: 0.79rem;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .matrix {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .matrix-row {
+      display: grid;
+      grid-template-columns: 1.1fr 0.7fr 1fr 0.55fr;
+      border-bottom: 1px solid rgba(125, 220, 255, 0.14);
+    }
+
+    .matrix-row:last-child {
+      border-bottom: 0;
+    }
+
+    .matrix-row > div {
+      padding: 9px 10px;
+      font-size: 0.83rem;
+      color: #c8dfeb;
+      line-height: 1.4;
+    }
+
+    .matrix-head {
+      background: rgba(97, 218, 251, 0.08);
+    }
+
+    .matrix-head > div {
+      color: #dcf4ff;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .architecture-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: 12px;
+      max-width: 240px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .arch-item {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(8, 27, 37, 0.72);
+      padding: 10px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #c5e9f8;
+    }
+
+    .square-figure {
+      width: min(100%, 250px);
+      aspect-ratio: 1;
+      margin: 14px auto 0;
+      display: grid;
+      place-items: center;
+      border: 1px dashed rgba(125, 220, 255, 0.55);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(97, 218, 251, 0.16), transparent 34%),
+        radial-gradient(circle at 72% 70%, rgba(78, 242, 194, 0.12), transparent 30%),
+        rgba(255, 255, 255, 0.03);
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .square-figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .flow-mermaid {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .flow-path {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    .flow-node {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(8, 27, 37, 0.72);
+      padding: 10px 12px;
+      min-height: 72px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.8rem;
+      color: #d7f1fb;
+      animation: pulse 2.6s ease-in-out infinite;
+    }
+
+    .flow-node.alt {
+      border-color: rgba(78, 242, 194, 0.35);
+      background: rgba(10, 32, 30, 0.7);
+    }
+
+    .flow-node.warn {
+      border-color: rgba(255, 151, 151, 0.35);
+      background: rgba(40, 18, 18, 0.68);
+    }
+
+    .flow-link {
+      color: #9dd8ee;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.82rem;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+
+    .cover-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.8fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .cover-art {
+      width: min(100%, 280px);
+      aspect-ratio: 1;
+      margin-left: auto;
+      border: 1px dashed rgba(125, 220, 255, 0.55);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(97, 218, 251, 0.16), transparent 34%),
+        radial-gradient(circle at 72% 70%, rgba(78, 242, 194, 0.12), transparent 30%),
+        rgba(255, 255, 255, 0.03);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: #c5e9f8;
+      padding: 18px;
+    }
+
+    .cover-art img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .cover-art span {
+      display: block;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      color: #9eb5c3;
+      margin-top: 8px;
+    }
+
+    .index-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+
+    .index-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 8px 10px;
+    }
+
+    .index-item strong {
+      display: block;
+      color: #dcf4ff;
+      margin-bottom: 2px;
+      font-size: 0.88rem;
+    }
+
+    .index-item span {
+      color: #9eb5c3;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.66rem;
+      line-height: 1.2;
+    }
+
+    .index-slide {
+      padding: 18px 24px 18px;
+    }
+
+    .index-slide h2 {
+      margin-bottom: 10px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .question-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 14px;
+    }
+
+    .question-box strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #dcf4ff;
+    }
+
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .tech-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background:
+        linear-gradient(180deg, rgba(97, 218, 251, 0.08), rgba(255, 255, 255, 0.02));
+      min-height: 210px;
+      text-align: center;
+    }
+
+    .tech-head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .tech-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(78, 242, 194, 0.12);
+      border: 1px solid rgba(78, 242, 194, 0.35);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1rem;
+      color: #4ef2c2;
+      box-shadow: 0 0 18px rgba(97, 218, 251, 0.12);
+    }
+
+    .tech-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .tech-head h3 {
+      margin-bottom: 3px;
+      font-size: 1rem;
+    }
+
+    .tech-head p {
+      font-size: 0.76rem;
+      color: #9eb5c3;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .tech-points {
+      display: grid;
+      gap: 7px;
+      margin-top: 4px;
+    }
+
+    .tech-points span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #d7eaf3;
+      font-size: 0.9rem;
+      line-height: 1.35;
+      width: 100%;
+      text-align: center;
+    }
+
+    .tech-points i {
+      font-style: normal;
+      color: var(--accent-2);
+    }
+
+    .tech-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    #s10 .card {
+      text-align: center;
+    }
+
+    #s10 .card ul {
+      justify-items: center;
+    }
+
+    #s10 .card li {
+      padding-left: 0;
+      text-align: center;
+      max-width: 34ch;
+    }
+
+    #s10 .card li::before {
+      position: static;
+      display: inline-block;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    #s10 .chips {
+      justify-content: center;
+    }
+
+    .tech-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.02);
+      color: #c5e9f8;
+      font-size: 0.74rem;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    @media (max-width: 980px) {
+      .grid.two,
+      .grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow-line {
+        grid-template-columns: 1fr;
+      }
+
+      .matrix-row {
+        grid-template-columns: 1fr;
+      }
+
+      .matrix-head {
+        display: none;
+      }
+
+      .layer {
+        grid-template-columns: 1fr;
+      }
+
+      .cover-layout,
+      .summary-grid,
+      .index-grid,
+      .tech-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-path {
+        grid-template-columns: 1fr;
+      }
+
+      .slide {
+        padding-inline: 16px;
+      }
+
+      .slide-inner {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hud {
+        top: 10px;
+      }
+
+      .brand,
+      .counter {
+        font-size: 0.66rem;
+        padding: 6px 10px;
+      }
+
+      .dots {
+        display: none;
+      }
+
+      .controls {
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hud" aria-hidden="true">
+    <div class="brand"><span class="dot"></span> Chatbot Insights R9K</div>
+    <div class="counter" id="counter">01 / 14</div>
+  </div>
+
+  <nav class="dots" id="dots" aria-label="Ir a diapositiva"></nav>
+
+  <main class="deck" id="deck">
+    <section class="slide" id="s1">
+      <article class="slide-inner">
+        <div class="cover-layout">
+          <div>
+            <p class="kicker">Presentacion Tecnica E2E</p>
+            <h1>Chatbot Insights R9K</h1>
+            <p class="lead" style="margin-bottom: 28px;">
+              Plataforma de analitica operativa asistida por IA que convierte lenguaje natural en SQL seguro,
+              devuelve insights accionables, construye reportes tecnicos visuales y responde sobre manuales con RAG.
+            </p>
+            <div class="chips">
+              <span class="chip">NL -> SQL</span>
+              <span class="chip">Chat with Data</span>
+              <span class="chip">Report Builder</span>
+              <span class="chip">Manuals Chat (n8n)</span>
+              <span class="chip">SSO Entra + Graph</span>
+            </div>
+            <p style="margin-top: 34px; color: #b6d0dd; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace;">Alba Mora de la Sen</p>
+          </div>
+          <div class="cover-art">
+            <img src="svg/5.svg" alt="Chatbot grafico" />
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s2">
+      <article class="slide-inner index-slide">
+        <h2>Indice</h2>
+        <div class="index-grid">
+          <article class="index-item"><strong>1) Problema, objetivo y alcance</strong><span>Contexto, necesidad y alcance del proyecto.</span></article>
+          <article class="index-item"><strong>2) Capacidades funcionales</strong><span>Chat de datos, Report Builder y Manuals Chat.</span></article>
+          <article class="index-item"><strong>3) Tecnologías usadas</strong><span>Stack técnico de la app y despliegue.</span></article>
+          <article class="index-item"><strong>4) Flujo visual A</strong><span>Conversión de lenguaje natural a SQL.</span></article>
+          <article class="index-item"><strong>5) Flujo visual B</strong><span>RAG con n8n para consultas de manuales.</span></article>
+          <article class="index-item"><strong>6) Arquitectura por capas</strong><span>Vista estructurada del sistema completo.</span></article>
+          <article class="index-item"><strong>7) Flujo visual C</strong><span>Construcción y exportación de reportes.</span></article>
+          <article class="index-item"><strong>8) Seguridad y despliegue</strong><span>Gobierno, autenticación e infraestructura.</span></article>
+          <article class="index-item"><strong>9) Validación funcional</strong><span>Qué valida la solución y qué aporta al usuario.</span></article>
+          <article class="index-item"><strong>10) Calidad del proyecto</strong><span>Tests y criterios de evaluación técnica.</span></article>
+          <article class="index-item"><strong>11) Summary de la app</strong><span>Resumen ejecutivo de toda la aplicación.</span></article>
+          <article class="index-item"><strong>12) Posibles preguntas técnicas</strong><span>3 preguntas habituales en defensa.</span></article>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s3">
+      <article class="slide-inner">
+        <h2>1) Problema, objetivo y alcance</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Problema operativo</h3>
+            <ul>
+              <li>Dependencia de expertos para construir SQL.</li>
+              <li>Tiempos altos para extraer insights y reportes reutilizables.</li>
+              <li>Dificultad para explotar manuales tecnicos con trazabilidad.</li>
+              <li>Necesidad de control corporativo y gobernanza.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Objetivo tecnico</h3>
+            <ul>
+              <li>Democratizar analitica con interfaz conversacional.</li>
+              <li>Reducir friccion entre pregunta de negocio y datos.</li>
+              <li>Estandarizar reporting HTML/PDF/CSV.</li>
+              <li>Integrar consulta documental con RAG contextual.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="square-figure">
+          <img src="svg/2.svg" alt="SVG cuadrado de problema y alcance" />
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s4">
+      <article class="slide-inner">
+        <h2>2) Capacidades funcionales</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Chat de datos (Text-to-SQL)</h3>
+            <ul>
+              <li>Input por texto o audio.</li>
+              <li>Agente LLM genera SQL y valida formato.</li>
+              <li>Ejecucion SELECT-only y reintentos por sintaxis.</li>
+              <li>Tabla + metadatos tecnicos para supervisor.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Chat with Data</h3>
+            <ul>
+              <li>Respuesta breve en lenguaje natural desde dataframe.</li>
+              <li>Complementa SQL/tablas con narrativa ejecutiva.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Report Builder</h3>
+            <ul>
+              <li>Plantillas HTML + componentes visuales.</li>
+              <li>Recomendador de grafica con agente LLM.</li>
+              <li>Exportacion a PDF y CSV.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Manuals Chat (RAG)</h3>
+            <ul>
+              <li>Webhook n8n con API key y sessionId.</li>
+              <li>Parseo flexible de respuestas del workflow.</li>
+              <li>Entrada por voz para soporte tecnico.</li>
+            </ul>
+          </article>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s5">
+      <article class="slide-inner">
+        <h2>3) Tecnologias usadas</h2>
+        <div class="tech-grid">
+          <article class="tech-card">
+            <div class="tech-head">
+              <div class="tech-icon"><img src="svg/12.svg" alt="Icono frontend" /></div>
+              <div>
+                <h3>Frontend y UX</h3>
+                <p>Interfaz, layout y experiencia</p>
+              </div>
+            </div>
+            <div class="tech-points">
+              <span><i>•</i> Python 3.11 + Streamlit</span>
+              <span><i>•</i> Reporting HTML con CSS Grid</span>
+              <span><i>•</i> Interfaz conversacional responsive</span>
+            </div>
+          </article>
+          <article class="tech-card">
+            <div class="tech-head">
+              <div class="tech-icon"><img src="svg/4.svg" alt="Icono IA" /></div>
+              <div>
+                <h3>IA y datos</h3>
+                <p>Modelos, agentes y base de datos</p>
+              </div>
+            </div>
+            <div class="tech-points">
+              <span><i>•</i> LangChain + Azure OpenAI</span>
+              <span><i>•</i> Ollama como fallback local</span>
+              <span><i>•</i> PostgreSQL + sqlglot SELECT-only</span>
+            </div>
+          </article>
+          <article class="tech-card">
+            <div class="tech-head">
+              <div class="tech-icon"><img src="svg/13.svg" alt="Icono despliegue" /></div>
+              <div>
+                <h3>Integracion y despliegue</h3>
+                <p>Automatizacion y operación</p>
+              </div>
+            </div>
+            <div class="tech-points">
+              <span><i>•</i> n8n para RAG y automatizacion</span>
+              <span><i>•</i> Azure Entra + Graph API</span>
+              <span><i>•</i> Docker Compose + Kubernetes</span>
+            </div>
+          </article>
+        </div>
+        <div class="tech-chips">
+          <span class="tech-chip">Python 3.11</span>
+          <span class="tech-chip">Streamlit</span>
+          <span class="tech-chip">LangChain</span>
+          <span class="tech-chip">Azure OpenAI</span>
+          <span class="tech-chip">Ollama</span>
+          <span class="tech-chip">PostgreSQL</span>
+          <span class="tech-chip">sqlglot</span>
+          <span class="tech-chip">n8n</span>
+          <span class="tech-chip">Docker</span>
+          <span class="tech-chip">Kubernetes</span>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s6">
+      <article class="slide-inner">
+        <h2>4) Flujo visual A - Chat de datos (NL -&gt; SQL)</h2>
+        <div class="flow-mermaid">
+          <div class="flow-path">
+            <div class="flow-node">Usuario<br/>Texto o audio</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">UI Streamlit<br/>Input handler</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">Controller<br/>Orquestacion</div>
+          </div>
+          <div class="flow-path">
+            <div class="flow-node">SQL Agent (LLM)<br/>Genera SQL</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">SQL Validator<br/>SELECT-only</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">PostgreSQL<br/>Ejecuta consulta</div>
+          </div>
+          <div class="flow-path">
+            <div class="flow-node">DataFrame<br/>+ metadatos</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">Chat with Data<br/>Narrativa</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">Respuesta final<br/>Usuario</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s7">
+      <article class="slide-inner">
+        <h2>5) Flujo visual B - Manuals Chat (n8n RAG)</h2>
+        <div class="flow-mermaid">
+          <div class="flow-path">
+            <div class="flow-node">Usuario<br/>Texto o voz</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">Whisper/Input<br/>Transcripcion</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">Webhook n8n<br/>API key + sessionId</div>
+          </div>
+          <div class="flow-path">
+            <div class="flow-node">n8n workflow<br/>Retrieval</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">LLM<br/>Generacion</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">Response parse<br/>JSON trazable</div>
+          </div>
+          <div class="flow-path">
+            <div class="flow-node warn">Fallback / timeout</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">Reintento</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">Usuario</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s8">
+      <article class="slide-inner">
+        <h2>6) Arquitectura por capas</h2>
+        <div class="grid" style="gap:10px;">
+          <article class="layer">
+            <div class="layer-id">Capa 1</div>
+            <div><h3>Presentacion (Streamlit)</h3><p>Chat, Reports, Manuals, Preferences y orquestacion/auth en application.py.</p></div>
+          </article>
+          <article class="layer">
+            <div class="layer-id">Capa 2</div>
+            <div><h3>Aplicacion</h3><p>Controladores, recursos y utilidades de estado, formato y visualizacion.</p></div>
+          </article>
+          <article class="layer">
+            <div class="layer-id">Capa 3</div>
+            <div><h3>IA (agentes)</h3><p>Runtime/base, builder y agentes SQL, chat con datos y recomendacion de graficas.</p></div>
+          </article>
+          <article class="layer">
+            <div class="layer-id">Capa 4</div>
+            <div><h3>Datos e integraciones</h3><p>PostgreSQL, Whisper, Azure Entra + Graph API, webhook n8n.</p></div>
+          </article>
+          <article class="layer">
+            <div class="layer-id">Capa 5</div>
+            <div><h3>Infraestructura</h3><p>Docker Compose, Dockerfile y manifests Kubernetes (app/db/ingress/config/secrets).</p></div>
+          </article>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s9">
+      <article class="slide-inner">
+        <h2>7) Flujo visual C - Report Builder</h2>
+        <div class="flow-mermaid">
+          <div class="flow-path">
+            <div class="flow-node">Usuario<br/>Define dataset</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">Plantilla HTML<br/>Base visual</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">Graficas<br/>Plotly</div>
+          </div>
+          <div class="flow-path">
+            <div class="flow-node alt">IA recomendador<br/>Mejor grafica</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node">Ajustes<br/>Titulo y estilo</div>
+            <div class="flow-link">--&gt;</div>
+            <div class="flow-node alt">Exportacion<br/>PDF + CSV</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s10">
+      <article class="slide-inner">
+        <h2>8) Seguridad, gobierno y despliegue</h2>
+        <div class="grid three">
+          <article class="card">
+            <h3>Backend + IA</h3>
+            <ul>
+              <li>Python 3.11, Streamlit, Pydantic Settings.</li>
+              <li>LangChain con Azure Chat Completions y opcion Ollama.</li>
+              <li>Prompts con contexto y control de tokens (tiktoken).</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Datos + seguridad</h3>
+            <ul>
+              <li>PostgreSQL y validacion SQL via sqlglot (SELECT-only).</li>
+              <li>SSO Azure Entra + autorizacion por grupos.</li>
+              <li>Secretos en env/configmap/secret fuera de codigo.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Operacion</h3>
+            <ul>
+              <li>Local/dev con Docker Compose.</li>
+              <li>Produccion en contenedor Streamlit + DB.</li>
+              <li>Kubernetes con Deployment/Service/Ingress/Config/Secret.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="chips">
+          <span class="chip">Azure Entra + Graph API</span>
+          <span class="chip">sqlglot SELECT-only</span>
+          <span class="chip">ConfigMap + Secret</span>
+          <span class="chip">Docker + Kubernetes</span>
+        </div>
+        <div class="square-figure">
+          <img src="svg/6.svg" alt="SVG cuadrado de seguridad y despliegue" />
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s11">
+      <article class="slide-inner">
+        <h2>9) Validacion funcional y experiencia de uso</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Lo que ya valida el proyecto</h3>
+            <ul>
+              <li>Generacion SQL sobre lenguaje natural con validacion de seguridad.</li>
+              <li>Generacion de respuestas explicativas con Chat with Data.</li>
+              <li>Construccion de reportes tecnicos con exportables PDF/CSV.</li>
+              <li>Consulta contextual de manuales via flujo RAG n8n.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Valor para operaciones</h3>
+            <p>
+              Reduce dependencia de especialistas SQL y acelera tiempo de respuesta
+              para consultas operativas y reportes reutilizables.
+            </p>
+            <p style="margin-top:10px;">Incluye ademas control de acceso corporativo y gobernanza de datos.</p>
+          </article>
+        </div>
+        <div class="square-figure">
+          <img src="svg/8.svg" alt="SVG cuadrado de validacion funcional" />
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s12">
+      <article class="slide-inner">
+        <h2>10) Calidad del proyecto</h2>
+        <div class="grid two">
+          <article class="card ok">
+            <h3>Calidad tecnica</h3>
+            <ul>
+              <li>Tests para agentes, app y flujo RAG.</li>
+              <li>Script de validacion SQL con metricas AST/columnas/tiempos.</li>
+              <li>Arquitectura modular por capas para evolucion controlada.</li>
+            </ul>
+            <div class="chips">
+              <span class="chip">test_agent.py</span>
+              <span class="chip">test_app.py</span>
+              <span class="chip">test_rag.py</span>
+              <span class="chip">validate.py</span>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Criterios de evaluacion tecnica</h3>
+            <ul>
+              <li>Seguridad: SSO, autorizacion por grupos y SQL en modo solo lectura.</li>
+              <li>Escalabilidad: despliegue portable en Docker/Kubernetes.</li>
+              <li>Mantenibilidad: separacion clara entre UI, control, IA e integraciones.</li>
+              <li>Usabilidad: experiencia conversacional con salida tecnica y ejecutiva.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="square-figure">
+          <img src="svg/7.svg" alt="SVG cuadrado de calidad del proyecto" />
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s13">
+      <article class="slide-inner">
+        <h2>11) Summary de la app</h2>
+        <div class="summary-grid">
+          <article class="card">
+            <h3>Que resuelve</h3>
+            <p>Convierte preguntas en lenguaje natural en analitica, reportes y consulta documental gobernada.</p>
+          </article>
+          <article class="card">
+            <h3>Como lo hace</h3>
+            <p>Combina Streamlit, agentes IA, validacion SQL, RAG con n8n, y exportacion de resultados reutilizables.</p>
+          </article>
+          <article class="card">
+            <h3>Valor final</h3>
+            <p>Reduce dependencia de especialistas, acelera la toma de decisiones y aporta trazabilidad tecnica.</p>
+          </article>
+        </div>
+        <div class="square-figure">
+          <img src="svg/11.svg" alt="SVG cuadrado de summary de la app" />
+        </div>
+      </article>
+    </section>
+
+    <section class="slide" id="s14">
+      <article class="slide-inner">
+        <h2>12) Posibles preguntas tecnicas</h2>
+        <div class="grid three">
+          <article class="question-box">
+            <strong>1. Como evitas que el LLM genere SQL inseguro?</strong>
+            <p>Con validacion previa del SQL, modo SELECT-only y separacion entre generacion, verificacion y ejecucion.</p>
+          </article>
+          <article class="question-box">
+            <strong>2. Que ventaja aporta n8n en Manuals Chat?</strong>
+            <p>Desacopla el flujo RAG, permite iterar rapido y mantiene el pipeline de retrieval y generacion más flexible.</p>
+          </article>
+          <article class="question-box">
+            <strong>3. Como se adapta la solucion a entorno corporativo?</strong>
+            <p>Con autenticacion Entra, control por grupos, despliegue en contenedores y componentes preparados para Kubernetes.</p>
+          </article>
+        </div>
+        <div class="square-figure">
+          <img src="svg/3.svg" alt="SVG cuadrado de preguntas tecnicas" />
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="controls" aria-label="Navegacion">
+    <button class="btn" id="prev" aria-label="Anterior">&#8593;</button>
+    <button class="btn" id="next" aria-label="Siguiente">&#8595;</button>
+  </div>
+
+  <script>
+    const deck = document.getElementById("deck");
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const dotsContainer = document.getElementById("dots");
+    const counter = document.getElementById("counter");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+    let current = 0;
+
+    const pad = (n) => String(n).padStart(2, "0");
+
+    function goTo(index) {
+      const target = Math.max(0, Math.min(slides.length - 1, index));
+      slides[target].scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderActive(index) {
+      current = index;
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+      document.querySelectorAll(".dot-btn").forEach((dot, i) => dot.classList.toggle("active", i === index));
+      counter.textContent = pad(index + 1) + " / " + pad(slides.length);
+    }
+
+    slides.forEach((slide, index) => {
+      const dot = document.createElement("button");
+      dot.className = "dot-btn";
+      dot.setAttribute("aria-label", "Ir a slide " + (index + 1));
+      dot.addEventListener("click", () => goTo(index));
+      dotsContainer.appendChild(dot);
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const idx = slides.indexOf(entry.target);
+            if (idx >= 0) {
+              renderActive(idx);
+            }
+          }
+        });
+      },
+      { threshold: 0.6, root: deck }
+    );
+
+    slides.forEach((slide) => observer.observe(slide));
+
+    prev.addEventListener("click", () => goTo(current - 1));
+    next.addEventListener("click", () => goTo(current + 1));
+
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowDown", "PageDown", " "].includes(event.key)) {
+        event.preventDefault();
+        goTo(current + 1);
+      }
+      if (["ArrowUp", "PageUp"].includes(event.key)) {
+        event.preventDefault();
+        goTo(current - 1);
+      }
+      if (event.key === "Home") {
+        event.preventDefault();
+        goTo(0);
+      }
+      if (event.key === "End") {
+        event.preventDefault();
+        goTo(slides.length - 1);
+      }
+    });
+
+    renderActive(0);
+  </script>
+</body>
+</html>
