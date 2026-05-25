@@ -324,6 +324,52 @@
       gap: 8px;
     }
 
+    .timer-dock {
+      position: fixed;
+      z-index: 22;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(5, 12, 17, 0.78);
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+    }
+
+    .timer-display {
+      min-width: 95px;
+      color: #d8f2fb;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.84rem;
+      letter-spacing: 0.06em;
+      text-align: center;
+    }
+
+    .timer-btn {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: rgba(97, 218, 251, 0.14);
+      color: #dff7ff;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .timer-btn.running {
+      background: rgba(78, 242, 194, 0.16);
+      border-color: rgba(78, 242, 194, 0.45);
+      color: #cffff0;
+    }
+
     .btn {
       width: 40px;
       height: 40px;
@@ -456,6 +502,21 @@
       height: auto;
       object-fit: contain;
       display: block;
+    }
+
+    .media-slot.screenshot-slot {
+      min-height: auto;
+      max-height: none;
+      padding: 12px;
+      overflow: visible;
+    }
+
+    .media-slot.screenshot-slot img {
+      width: 100%;
+      max-width: 100%;
+      max-height: none;
+      height: auto;
+      object-fit: contain;
     }
 
     .media-slot div {
@@ -749,6 +810,53 @@
       align-items: center;
     }
 
+    #s1 .slide-inner {
+      display: grid;
+      align-items: center;
+    }
+
+    #s1 .cover-layout {
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 420px);
+      gap: 36px;
+      align-items: center;
+    }
+
+    #s1 h1 {
+      margin-bottom: 18px;
+      max-width: 14ch;
+      font-size: clamp(2.5rem, 5.6vw, 4.8rem);
+    }
+
+    #s1 .lead {
+      max-width: 40ch;
+      font-size: clamp(1.08rem, 2vw, 1.34rem);
+      line-height: 1.45;
+    }
+
+    #s1 .cover-art {
+      width: min(100%, 400px);
+    }
+
+    #s1 .author-block {
+      margin-top: 18px;
+      color: #b6d0dd;
+      font-size: 0.9rem;
+      font-family: "JetBrains Mono", monospace;
+      line-height: 1.35;
+    }
+
+    #s1 .author-block span {
+      display: block;
+      font-size: 0.78rem;
+      color: #95afbd;
+      letter-spacing: 0.03em;
+    }
+
+    #s23 .square-figure {
+      width: min(100%, 520px);
+      max-width: 520px;
+    }
+
     .cover-art {
       width: min(100%, 280px);
       aspect-ratio: 1;
@@ -985,11 +1093,37 @@
       gap: 6px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: 6px 10px;
+      padding: 10px 14px;
       background: rgba(255, 255, 255, 0.02);
       color: #c5e9f8;
-      font-size: 0.74rem;
+      font-size: 0.96rem;
       font-family: "JetBrains Mono", monospace;
+    }
+
+    .tech-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .validation-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 14px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .validation-text-col {
+      display: grid;
+      gap: 12px;
+    }
+
+    .validation-media .square-figure {
+      width: min(100%, 460px);
+      max-width: 460px;
+      margin: 0 auto;
     }
 
     .notice {
@@ -1166,6 +1300,34 @@
         grid-template-columns: 1fr;
       }
 
+      #s1 .cover-layout {
+        text-align: center;
+      }
+
+      #s1 h1,
+      #s1 .lead {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      #s1 .cover-art {
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      .validation-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .validation-media .square-figure {
+        width: min(100%, 300px);
+      }
+
+      #s23 .square-figure {
+        width: min(100%, 360px);
+        max-width: 360px;
+      }
+
       .flow-path {
         grid-template-columns: 1fr;
       }
@@ -1198,6 +1360,21 @@
         right: 12px;
         bottom: 12px;
       }
+
+      .timer-dock {
+        bottom: 12px;
+        padding: 7px 10px;
+      }
+
+      .timer-display {
+        min-width: 84px;
+        font-size: 0.78rem;
+      }
+
+      .timer-btn {
+        padding: 6px 10px;
+        font-size: 0.69rem;
+      }
     }
   </style>
 </head>
@@ -1216,20 +1393,11 @@
       <article class="slide-inner">
         <div class="cover-layout">
           <div>
-            <p class="kicker">Presentacion Tecnica E2E</p>
             <h1>Chatbot Insights R9K</h1>
             <p class="lead" style="margin-bottom: 28px;">
-              Plataforma de analitica operativa asistida por IA que convierte lenguaje natural en SQL seguro,
-              devuelve insights accionables, construye reportes tecnicos visuales y responde sobre manuales con RAG.
+              Plataforma de analitica operativa con IA para consultar datos en lenguaje natural y generar reportes tecnicos.
             </p>
-            <div class="chips">
-              <span class="chip">NL -> SQL</span>
-              <span class="chip">Chat with Data</span>
-              <span class="chip">Report Builder</span>
-              <span class="chip">Manuals Chat (n8n)</span>
-              <span class="chip">SSO Entra + Graph</span>
-            </div>
-            <p style="margin-top: 34px; color: #b6d0dd; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace;">Alba Mora de la Sen</p>
+            <p class="author-block">Alba Mora de la Sen<span>Siemens Mobility</span></p>
           </div>
           <div class="cover-art">
             <img src="svg/5.svg" alt="Chatbot grafico" />
@@ -1344,7 +1512,7 @@
     <section class="slide" id="s5">
       <article class="slide-inner">
         <h2>Interfaz visual: Rail9000 Chat</h2>
-        <div class="media-slot" style="margin-top: 20px; min-height: 500px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 20px;">
           <img src="screenshots/interfaz-rail9000-chat.png" alt="Interfaz principal de Rail9000 Chat" />
         </div>
       </article>
@@ -1361,11 +1529,11 @@
                 <h3>Frontend y UX</h3>
               </div>
             </div>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Python 3.11</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Streamlit</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">CSS Grid</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">HTML</span>
+            <div class="tech-cloud">
+              <span class="tech-chip">Python 3.11</span>
+              <span class="tech-chip">Streamlit</span>
+              <span class="tech-chip">CSS Grid</span>
+              <span class="tech-chip">HTML</span>
             </div>
           </article>
           <article class="tech-card" style="min-height: 280px; display: flex; flex-direction: column; justify-content: center;">
@@ -1374,12 +1542,12 @@
                 <h3>IA y datos</h3>
               </div>
             </div>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">LangChain</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Azure OpenAI</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Ollama</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">PostgreSQL</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">sqlglot</span>
+            <div class="tech-cloud">
+              <span class="tech-chip">LangChain</span>
+              <span class="tech-chip">Azure OpenAI</span>
+              <span class="tech-chip">Ollama</span>
+              <span class="tech-chip">PostgreSQL</span>
+              <span class="tech-chip">sqlglot</span>
             </div>
           </article>
           <article class="tech-card" style="min-height: 280px; display: flex; flex-direction: column; justify-content: center;">
@@ -1388,12 +1556,12 @@
                 <h3>Integración y despliegue</h3>
               </div>
             </div>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">n8n</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Azure Entra</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Graph API</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Docker</span>
-              <span class="tech-chip" style="font-size: 0.82rem; padding: 8px 12px;">Kubernetes</span>
+            <div class="tech-cloud">
+              <span class="tech-chip">n8n</span>
+              <span class="tech-chip">Azure Entra</span>
+              <span class="tech-chip">Graph API</span>
+              <span class="tech-chip">Docker</span>
+              <span class="tech-chip">Kubernetes</span>
             </div>
           </article>
         </div>
@@ -1406,26 +1574,27 @@
     <section class="slide" id="s7">
       <article class="slide-inner">
         <h2>4) Arquitectura por capas</h2>
+        <p class="lead" style="margin-bottom: 12px;">Esta vista resume como la solucion separa responsabilidades para poder iterar rapido en la PoC sin perder control tecnico.</p>
         <div class="grid" style="gap:10px;">
           <article class="layer">
             <div class="layer-id">Capa 1</div>
-            <div><h3>Presentacion (Streamlit)</h3><p>Chat, Reports, Manuals, Preferences y orquestacion/auth en application.py.</p></div>
+            <div><h3>Presentacion (Streamlit)</h3><p>Interfaz de chat, reportes y manuales; aqui ocurre la experiencia de usuario.</p></div>
           </article>
           <article class="layer">
             <div class="layer-id">Capa 2</div>
-            <div><h3>Aplicacion</h3><p>Controladores, recursos y utilidades de estado, formato y visualizacion.</p></div>
+            <div><h3>Aplicacion</h3><p>Controladores y utilidades que conectan interfaz, logica y salidas de datos.</p></div>
           </article>
           <article class="layer">
             <div class="layer-id">Capa 3</div>
-            <div><h3>IA (agentes)</h3><p>Runtime/base, builder y agentes SQL, chat con datos y recomendacion de graficas.</p></div>
+            <div><h3>IA (agentes)</h3><p>Prompts, runtime y agentes para SQL, narrativa y recomendacion de visualizaciones.</p></div>
           </article>
           <article class="layer">
             <div class="layer-id">Capa 4</div>
-            <div><h3>Datos e integraciones</h3><p>PostgreSQL, Whisper, Azure Entra + Graph API, webhook n8n.</p></div>
+            <div><h3>Datos e integraciones</h3><p>PostgreSQL, autenticacion corporativa y automatizaciones externas con n8n.</p></div>
           </article>
           <article class="layer">
             <div class="layer-id">Capa 5</div>
-            <div><h3>Infraestructura</h3><p>Docker Compose, Dockerfile y manifests Kubernetes (app/db/ingress/config/secrets).</p></div>
+            <div><h3>Infraestructura</h3><p>Contenerizacion y base de despliegue para evolucionar de PoC a entorno productivo.</p></div>
           </article>
         </div>
       </article>
@@ -1460,7 +1629,7 @@
     <section class="slide" id="s9">
       <article class="slide-inner">
         <h2>Resultado: Tabla de datos</h2>
-        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 24px;">
           <img src="screenshots/chat-resultado-tabla.png" alt="Resultado tabla SQL" />
         </div>
       </article>
@@ -1493,7 +1662,7 @@
     <section class="slide" id="s11">
       <article class="slide-inner">
         <h2>Workflow n8n: Retrieval RAG</h2>
-        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 24px;">
           <img src="screenshots/n8n-workflow-rag.png" alt="Workflow n8n RAG" />
         </div>
       </article>
@@ -1503,7 +1672,7 @@
     <section class="slide" id="s12">
       <article class="slide-inner">
         <h2>Respuesta: Consulta de manuales</h2>
-        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 24px;">
           <img src="screenshots/manuals-chat-resultado.png" alt="Resultado Manuals Chat" />
         </div>
       </article>
@@ -1536,7 +1705,7 @@
     <section class="slide" id="s14">
       <article class="slide-inner">
         <h2>Reporte 1</h2>
-        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 24px;">
           <img src="screenshots/report-1.png" alt="Ejemplo Reporte 1" />
         </div>
       </article>
@@ -1546,7 +1715,7 @@
     <section class="slide" id="s15">
       <article class="slide-inner">
         <h2>Reporte 2</h2>
-        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 24px;">
           <img src="screenshots/report-2.png" alt="Ejemplo Reporte 2" />
         </div>
       </article>
@@ -1556,7 +1725,7 @@
     <section class="slide" id="s16">
       <article class="slide-inner">
         <h2>Reporte 3</h2>
-        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 24px;">
           <img src="screenshots/report-3.png" alt="Ejemplo Reporte 3" />
         </div>
       </article>
@@ -1566,7 +1735,7 @@
     <section class="slide" id="s17">
       <article class="slide-inner">
         <h2>Reporte 4</h2>
-        <div class="media-slot" style="min-height: 550px; margin-top: 24px;">
+        <div class="media-slot screenshot-slot" style="margin-top: 24px;">
           <img src="screenshots/report-4.png" alt="Ejemplo Reporte 4" />
         </div>
       </article>
@@ -1576,26 +1745,30 @@
     <section class="slide" id="s19">
       <article class="slide-inner">
         <h2>8) Validacion funcional y experiencia de uso</h2>
-        <div class="grid two">
-          <article class="card">
-            <h3>Lo que ya valida el proyecto</h3>
-            <ul>
-              <li>Generacion SQL sobre lenguaje natural con validacion de seguridad.</li>
-              <li>Generacion de respuestas explicativas con Chat with Data.</li>
-              <li>Construccion de reportes tecnicos con exportables PDF/CSV.</li>
-              <li>Consulta contextual de manuales via flujo RAG n8n.</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Valor para operaciones</h3>
-            <p>
-              Elimina la dependencia de especialistas SQL en el centro de control: cualquier operario puede consultar datos operativos en tiempo real usando lenguaje natural y obtener reportes sin intermediarios.
-            </p>
-            <p style="margin-top:10px;">Incluye ademas control de acceso corporativo, gobernanza de datos y soporte documental contextualizado.</p>
-          </article>
-        </div>
-        <div class="square-figure">
-          <img src="svg/8.svg" alt="SVG cuadrado de validacion funcional" />
+        <div class="validation-layout">
+          <div class="validation-text-col">
+            <article class="card">
+              <h3>Validacion funcional</h3>
+              <ul>
+                <li>Generacion SQL sobre lenguaje natural con validacion de seguridad.</li>
+                <li>Generacion de respuestas explicativas con Chat with Data.</li>
+                <li>Construccion de reportes tecnicos con exportables PDF/CSV.</li>
+                <li>Consulta contextual de manuales via flujo RAG n8n.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Experiencia de uso</h3>
+              <ul>
+                <li>Elimina la dependencia de especialistas SQL en el centro de control: cualquier operario puede consultar datos operativos en tiempo real usando lenguaje natural y obtener reportes sin intermediarios.</li>
+                <li>Incluye ademas control de acceso corporativo, gobernanza de datos y soporte documental contextualizado.</li>
+              </ul>
+            </article>
+          </div>
+          <div class="validation-media">
+            <div class="square-figure">
+              <img src="svg/8.svg" alt="SVG cuadrado de validacion funcional" />
+            </div>
+          </div>
         </div>
       </article>
     </section>
@@ -1628,18 +1801,14 @@
     <section class="slide" id="s22">
       <article class="slide-inner">
         <h2>10) Posibles preguntas tecnicas</h2>
-        <div class="grid three">
+        <div class="grid two">
           <article class="question-box">
             <strong>1. Como evitas que el LLM genere SQL inseguro?</strong>
-            <p>Con validacion previa del SQL, modo SELECT-only y separacion entre generacion, verificacion y ejecucion.</p>
+            <p>Con una cadena de seguridad: guardrails en prompts, validacion previa del SQL y ejecucion en modo solo lectura (solo SELECT), sin permisos de escritura.</p>
           </article>
           <article class="question-box">
-            <strong>2. Que ventaja aporta n8n en Manuals Chat?</strong>
-            <p>Desacopla el flujo RAG, permite iterar rapido y mantiene el pipeline de retrieval y generacion mas flexible.</p>
-          </article>
-          <article class="question-box">
-            <strong>3. Como se adapta la solucion a entorno corporativo?</strong>
-            <p>Con autenticacion Entra, control por grupos, despliegue en contenedores y componentes preparados para Kubernetes.</p>
+            <strong>2. Cual fue tu rol en este proyecto?</strong>
+            <p>El proyecto es una Proof of Concept; no lo desarrolle desde cero. Mi aportacion fue mejorar diseno y funcionalidades IA: ajuste de prompts, correccion de errores y generacion de datos sinteticos con el mismo schema de la BBDD para testing en desarrollo.</p>
           </article>
         </div>
         <div class="square-figure">
@@ -1648,7 +1817,23 @@
       </article>
     </section>
 
+    <!-- ─── S23 CIERRE ─────────────────────────────────────────────────── -->
+    <section class="slide" id="s23">
+      <article class="slide-inner" style="display: grid; align-content: center; text-align: center; gap: 16px;">
+        <h2 style="margin-bottom: 0;">Gracias por vuestra atencion</h2>
+        <p class="lead" style="margin: 0 auto;">Quedo disponible para cualquier pregunta o comentario.</p>
+        <div class="square-figure" style="margin-top: 6px;">
+          <img src="svg/1.svg" alt="SVG de cierre" />
+        </div>
+      </article>
+    </section>
+
   </main>
+
+  <div class="timer-dock" aria-live="polite">
+    <button class="timer-btn" id="timerToggle" aria-label="Iniciar cronometro">Iniciar cronometro</button>
+    <div class="timer-display" id="timerDisplay">00:00:00</div>
+  </div>
 
   <div class="controls" aria-label="Navegacion">
     <button class="btn" id="prev" aria-label="Anterior">&#8593;</button>
@@ -1662,9 +1847,48 @@
     const counter = document.getElementById("counter");
     const prev = document.getElementById("prev");
     const next = document.getElementById("next");
+    const timerToggle = document.getElementById("timerToggle");
+    const timerDisplay = document.getElementById("timerDisplay");
     let current = 0;
+    let timerRunning = false;
+    let timerStart = 0;
+    let elapsedMs = 0;
+    let timerInterval = null;
 
     const pad = (n) => String(n).padStart(2, "0");
+
+    function formatTime(totalMs) {
+      const totalSeconds = Math.floor(totalMs / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+
+    function updateTimerDisplay() {
+      const baseMs = timerRunning ? elapsedMs + (Date.now() - timerStart) : elapsedMs;
+      timerDisplay.textContent = formatTime(baseMs);
+    }
+
+    function toggleTimer() {
+      if (!timerRunning) {
+        timerRunning = true;
+        timerStart = Date.now();
+        timerToggle.textContent = "Pausar cronometro";
+        timerToggle.classList.add("running");
+        timerToggle.setAttribute("aria-label", "Pausar cronometro");
+        timerInterval = setInterval(updateTimerDisplay, 250);
+      } else {
+        timerRunning = false;
+        elapsedMs += Date.now() - timerStart;
+        timerToggle.textContent = "Reanudar cronometro";
+        timerToggle.classList.remove("running");
+        timerToggle.setAttribute("aria-label", "Reanudar cronometro");
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      updateTimerDisplay();
+    }
 
     function goTo(index) {
       const target = Math.max(0, Math.min(slides.length - 1, index));
@@ -1704,6 +1928,7 @@
 
     prev.addEventListener("click", () => goTo(current - 1));
     next.addEventListener("click", () => goTo(current + 1));
+    timerToggle.addEventListener("click", toggleTimer);
 
     window.addEventListener("keydown", (event) => {
       if (["ArrowDown", "PageDown", " "].includes(event.key)) {
@@ -1725,6 +1950,7 @@
     });
 
     renderActive(0);
+    updateTimerDisplay();
   </script>
 </body>
 </html>
