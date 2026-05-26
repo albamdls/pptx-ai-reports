@@ -66,7 +66,7 @@ Si vas rapido: amplia S7 y S19 con una frase extra de valor tecnico.
 > y la plataforma genera y ejecuta SQL de forma segura, solo en modo lectura.
 >
 > Segundo, el Report Builder: desde esos datos el usuario puede construir
-> un reporte tecnico con visualizaciones y exportarlo a PDF, HTML o CSV.
+> un reporte tecnico con visualizaciones y exportarlo a PDF o CSV.
 >
 > Y tercero, el Manuals Chat: un chat sobre la documentacion tecnica del software
 > del centro de control, usando RAG con n8n, incluyendo entrada por voz."
@@ -177,7 +177,7 @@ Si vas rapido: amplia S7 y S19 con una frase extra de valor tecnico.
 > La IA analiza el tipo de dato y recomienda la visualizacion mas adecuada:
 > barras, lineas, tabla, lo que mejor represente la informacion.
 > Se generan las graficas con Plotly, el usuario puede ajustarlas
-> y finalmente exporta el reporte completo en PDF, HTML o CSV."
+> y finalmente exporta el reporte completo en PDF o CSV."
 
 ---
 
